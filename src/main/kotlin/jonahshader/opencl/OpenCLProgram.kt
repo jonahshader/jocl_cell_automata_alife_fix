@@ -17,7 +17,7 @@ import java.util.*
  */
 class OpenCLProgram(filename: String, kernelNames: Array<String>) {
     private val platformIndex = 0
-    private val deviceType = CL.CL_DEVICE_TYPE_ALL
+    private val deviceType = CL.CL_DEVICE_TYPE_GPU
     private val deviceIndex = 0
 
     lateinit var commandQueue: cl_command_queue
@@ -83,13 +83,13 @@ class OpenCLProgram(filename: String, kernelNames: Array<String>) {
         val platform = platforms[platformIndex]
         println("platform $platform")
 
-        for (p in platforms) {
-            val nameString = CharArray(2048)
-            val nameStringPtr = Pointer.to(nameString)
-//            nameString.
-            CL.clGetPlatformInfo(p, CL.CL_PLATFORM_NAME, 2048L, nameStringPtr, null)
-            println("platform $p name: $nameString")
-        }
+//        for (p in platforms) {
+//            val nameString = CharArray(2048)
+//            val nameStringPtr = Pointer.to(nameString)
+////            nameString.
+//            CL.clGetPlatformInfo(p, CL.CL_PLATFORM_NAME, 2048L, nameStringPtr, null)
+//            println("platform $p name: $nameString")
+//        }
 
         // Initialize the context properties
         val contextProperties = cl_context_properties()
