@@ -2,6 +2,7 @@ package jonahshader.opencl
 
 import org.jocl.*
 import java.io.IOException
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -68,17 +69,27 @@ class OpenCLProgram(filename: String, kernelNames: Array<String>) {
     // opencl setup stuff
     private fun clInit() {
         CL.setExceptionsEnabled(true)
-
+        //clGetPlatformInfo, clGetDeviceInfo,
         // Obtain the number of platforms
         val numPlatformsArray = IntArray(1)
         CL.clGetPlatformIDs(0, null, numPlatformsArray)
         val numPlatforms = numPlatformsArray[0]
         println("numPlatforms $numPlatforms")
 
+
         // Obtain a platform ID
         val platforms = arrayOfNulls<cl_platform_id>(numPlatforms)
         CL.clGetPlatformIDs(platforms.size, platforms, null)
         val platform = platforms[platformIndex]
+        println("platform $platform")
+
+        for (p in platforms) {
+            val nameString = CharArray(2048)
+            val nameStringPtr = Pointer.to(nameString)
+//            nameString.
+            CL.clGetPlatformInfo(p, CL.CL_PLATFORM_NAME, 2048L, nameStringPtr, null)
+            println("platform $p name: $nameString")
+        }
 
         // Initialize the context properties
         val contextProperties = cl_context_properties()
@@ -88,11 +99,19 @@ class OpenCLProgram(filename: String, kernelNames: Array<String>) {
         val numDevicesArray = IntArray(1)
         CL.clGetDeviceIDs(platform, deviceType, 0, null, numDevicesArray)
         val numDevices = numDevicesArray[0]
+        println("numDevices $numDevices")
 
         // Obtain a device ID
         val devices = arrayOfNulls<cl_device_id>(numDevices)
         CL.clGetDeviceIDs(platform, deviceType, numDevices, devices, null)
         val device = devices[deviceIndex]
+        println("device $device")
+
+        val deviceNameString = CharArray(512)
+        val deviceNameStringPtr = Pointer.to(deviceNameString)
+
+        CL.clGetDeviceInfo(device, CL.CL_DEVICE_NAME, 512, deviceNameStringPtr, null)
+        println("device name: ${String(deviceNameString, 0, 512)}")
 
         // Create a context for the selected device
         context = CL.clCreateContext(
