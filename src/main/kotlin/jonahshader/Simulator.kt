@@ -24,8 +24,9 @@ class Simulator(private val worldWidth: Int, private val worldHeight: Int, priva
         const val NN_OUTPUTS = 10
 
 //        val NN_LAYERS = intArrayOf(NN_INPUTS, 15, 15, 15, 15, 15, 15, 15, NN_OUTPUTS)
-        val NN_LAYERS = intArrayOf(NN_INPUTS, 20, 18, 18, 18, 15, NN_OUTPUTS)
 //        val NN_LAYERS = intArrayOf(NN_INPUTS, 17, 17, 17, 17, 17, 17, NN_OUTPUTS)
+        val NN_LAYERS = intArrayOf(NN_INPUTS, 20, 18, 18, 18, 15, NN_OUTPUTS)
+//        val NN_LAYERS = intArrayOf(NN_INPUTS, 77, 30, 20, NN_OUTPUTS)
 
 
     }
@@ -262,7 +263,7 @@ class Simulator(private val worldWidth: Int, private val worldHeight: Int, priva
             worldA.array[i] = -1
             worldB.array[i] = -1
             randomNumbers.array[i] = ran.nextInt()
-            worldFood.array[i] = 0.01f + ran.nextFloat().pow(8) * 0.1f
+            worldFood.array[i] = 0.5f + ran.nextFloat().pow(8) * 0.1f
             worldFoodBackBuffer.array[i] = worldFood.array[i]
         }
 
